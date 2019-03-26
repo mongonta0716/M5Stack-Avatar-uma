@@ -17,8 +17,9 @@ private:
   int offsetX;
   int offsetY;
   float openRatio;
-  uint32_t primaryColor;
-  uint32_t secondaryColor;
+  uint32_t insideColor;
+  uint32_t outsideColor;
+  uint32_t bgColor;
   void clear(void);
   void _draw(int x1, int y1, int x2, int y2);
 public:
@@ -27,10 +28,11 @@ public:
   Mouth(int x, int y,
   int minWidth, int maxWidth,
   int minHeight, int maxHeight,
-  uint32_t primaryColor, uint32_t secondaryColor);
+  uint32_t insideColor, uint32_t outsideColor, uint32_t bgColor);
   void setOpenRatio(float ratio);
   void open(int percent);
   void draw(float breath);
+  void extendAction();
 };
 
 class Eye
@@ -45,15 +47,16 @@ private:
   int lastY;
   int lastR;
   float openRatio;
-  uint32_t primaryColor;
-  uint32_t secondaryColor;
+  uint32_t insideColor;
+  uint32_t outsideColor;
+  uint32_t bgColor;
   void clear(void);
   void drawCircle(int x, int y, int r);
   void drawRect(int x, int y, int w, int h);
 public:
   // constructor
   Eye();
-  Eye(int x, int y, int r, uint32_t primaryColor, uint32_t secondaryColor);
+  Eye(int x, int y, int r, uint32_t insideColor, uint32_t outsideColor, uint32_t bgColor);
   void setOpenRatio(float ratio);
   void setOffset(int offsetX, int offsetY);
   void open(boolean isOpen);
@@ -85,5 +88,5 @@ public:
   void setExpression(void); // TODO
   void init(void);
   void draw(void);
-  void spitWater(void);
+  void extendAction(void);
 };

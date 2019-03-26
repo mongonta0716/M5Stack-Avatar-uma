@@ -5,7 +5,7 @@ Mouth::Mouth(void)
 {
 
 }
-Mouth::Mouth(int x, int y, int minWidth, int maxWidth, int minHeight, int maxHeight, uint32_t primaryColor, uint32_t secondaryColor)
+Mouth::Mouth(int x, int y, int minWidth, int maxWidth, int minHeight, int maxHeight, uint32_t insideColor, uint32_t outsideColor, uint32_t bgColor)
 {
   // TODO: validation
   this->x = x;
@@ -14,8 +14,9 @@ Mouth::Mouth(int x, int y, int minWidth, int maxWidth, int minHeight, int maxHei
   this->maxWidth = maxWidth;
   this->minHeight = minHeight;
   this->maxHeight = maxHeight;
-  this->primaryColor = primaryColor;
-  this->secondaryColor = secondaryColor;
+  this->insideColor = insideColor; 
+  this->outsideColor = outsideColor; 
+  this->bgColor = bgColor;
   this->openRatio = 0;
   this->lastX = 0;
   this->lastY = 0;
@@ -26,19 +27,18 @@ Mouth::Mouth(int x, int y, int minWidth, int maxWidth, int minHeight, int maxHei
 }
 void Mouth::clear()
 {
-//  M5.Lcd.fillRect(lastX, lastY, lastW, lastH, secondaryColor);
-  M5.Lcd.fillEllipse(lastX+lastW/2+offsetX, lastY+lastH/2+offsetY, lastW/2, lastH/2, TFT_LIGHTGREY);
+  M5.Lcd.fillEllipse(lastX+lastW/2+offsetX, lastY+lastH/2+offsetY, lastW/2, lastH/2, outsideColor);
 }
 void Mouth::_draw(int x, int y, int w, int h)
 {
   if (lastX == x && lastY == y && lastW == w && lastH == h) return;
   clear();
-//  M5.Lcd.fillRect(x, y, w, h, primaryColor);
-  M5.Lcd.fillEllipse(160, 165, 50, 45, TFT_LIGHTGREY);
-  M5.Lcd.fillEllipse(x+w/2+offsetX, y+h/2+offsetY, w/2, h/2, RED);
-  M5.Lcd.drawEllipse(x+w/2+offsetX, y+h/2+offsetY, w/2, h/2, TFT_LIGHTGREY);
+  M5.Lcd.fillEllipse(160, 165, 60, 40, outsideColor);
+  M5.Lcd.drawEllipse(160, 165, 60, 40, bgColor);
+  M5.Lcd.fillEllipse(x+w/2+offsetX, y+h/2+offsetY, w/2, h/2, insideColor);
+  M5.Lcd.drawEllipse(x+w/2+offsetX, y+h/2+offsetY, w/2, h/2, outsideColor);
   if(h > 3) {
-    M5.Lcd.drawEllipse(x+w/2+offsetX, y+h/2+offsetY, w/2-1, h/2-1, TFT_LIGHTGREY);
+    M5.Lcd.drawEllipse(x+w/2+offsetX, y+h/2+offsetY, w/2-1, h/2-1, outsideColor);
   }
   lastX = x + offsetX;
   lastY = y + offsetY;
@@ -67,13 +67,19 @@ void Mouth::draw(float breath /* FIXME: wrap it by context */)
   int y = this->y - h / 2 + breath * 2;
   _draw(x, y, w, h);
 }
+void Mouth::extendAction()
+{
+  M5.Lcd.fillEllipse(160, 165, 60, 30, BLACK);
+  M5.Lcd.fillEllipse(130, 165, 10, 10, YELLOW);
+  M5.Lcd.fillEllipse(190, 165, 10, 10, YELLOW);
+}
 
 // Eye
 Eye::Eye(void)
 {
   
 }
-Eye::Eye(int x, int y, int r, uint32_t primaryColor, uint32_t secondaryColor)
+Eye::Eye(int x, int y, int r, uint32_t insideColor, uint32_t outsideColor, uint32_t bgColor)
 {
   this->openRatio = 1;
   this->x = x;
@@ -84,30 +90,30 @@ Eye::Eye(int x, int y, int r, uint32_t primaryColor, uint32_t secondaryColor)
   this->lastR = 0;
   this->offsetX = 0;
   this->offsetY = 0;
-  this->primaryColor = primaryColor;
-  this->secondaryColor = secondaryColor;
+  this->insideColor = insideColor;
+  this->outsideColor = outsideColor;
+  this->bgColor = bgColor;
 }
 void Eye::clear()
 {
-  M5.Lcd.fillRect(lastX - lastR - 1, lastY - lastR - 1,
-                  lastR * 2 + 2 , lastR * 2 + 2  , secondaryColor);
+  M5.Lcd.fillCircle(lastX , lastY ,
+                  lastR + 2 , bgColor);
 }
 void Eye::drawCircle(int x, int y, int r)
 {
-//  if (lastX == x && lastY == y && lastR == r) return;
   clear();
-  M5.Lcd.fillCircle(x, y, r, primaryColor);
+  M5.Lcd.fillCircle(x, y, r, insideColor);
+  M5.Lcd.drawCircle(x, y, r, outsideColor);
+
   // TODO: Sleepy face
-  // M5.Lcd.fillRect(x - r, y - r, r * 2 + 2, r, secondaryColor);
   lastX = x;
   lastY = y;
   lastR = r;
 }
 void Eye::drawRect(int x, int y, int w, int h)
 {
-//  if (lastX == x + w / 2 && lastY == y + h / 2 && lastR == w) return;
   clear();
-  M5.Lcd.fillRect(x, y, w , h , primaryColor);
+  M5.Lcd.fillRect(x, y, w , h , outsideColor);
   lastX = x + w / 2;
   lastY = y + h / 2;
   lastR = w; // TODO: ellipse
@@ -148,16 +154,15 @@ void Eye::open(boolean isOpen)
   draw(0.0);
 }
 
-#define PRIMARY_COLOR WHITE
-#define SECONDARY_COLOR TFT_DARKGREY
+
 
 Avatar::Avatar()
 {
-  this->mouth = Mouth(160, 150, 50, 100, 4, 60, PRIMARY_COLOR, SECONDARY_COLOR);
-  this->eyeballR = Eye(90, 90, 8, SECONDARY_COLOR, PRIMARY_COLOR);
-  this->eyeballL = Eye(230, 90, 8, SECONDARY_COLOR, PRIMARY_COLOR);
-  this->eyeR = Eye(90, 90, 20, PRIMARY_COLOR, SECONDARY_COLOR);
-  this->eyeL = Eye(230, 90, 20, PRIMARY_COLOR, SECONDARY_COLOR);
+  this->mouth = Mouth(160, 150, 50, 100, 4, 60, BLACK, TFT_PINK, BLACK);
+  this->eyeballR = Eye(80, 80, 3,  BLACK, WHITE, WHITE);
+  this->eyeballL = Eye(240, 80, 3, BLACK, WHITE, WHITE);
+  this->eyeR = Eye(80, 80, 30,     WHITE, BLACK, WHITE);
+  this->eyeL = Eye(240, 80, 30,    WHITE, BLACK, WHITE);
   this->breath = 0.0;
   isEyeOpen = true;
   EyeOpenRatio = 1.0;
@@ -224,9 +229,9 @@ void Avatar::draw()
   }
 }
 
-void Avatar::spitWater()
+void Avatar::extendAction()
 {
-  eyeL.open(0);
+  eyeL.open(1);
   eyeR.open(1);
-  
+  mouth.extendAction();
 }
