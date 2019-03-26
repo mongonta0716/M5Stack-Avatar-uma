@@ -25,6 +25,11 @@ LovyanLauncherの詳しい使い方は下記のブログにて解説していま
 
 [Change from Fugu to UMA](https://github.com/mongonta0716/M5Stack-Avatar-uma/commit/8da0441fec0a3a6d0a4a4a33f9aa40b7c8aa51c7?diff=unified)
 
+## 色について
+下記のIn_eSPI.hの500行目ぐらいに定義があります。
+
+https://github.com/m5stack/M5Stack/blob/master/src/utility/In_eSPI.h
+
 # Requirement
 
 コンパイルする場合は、以下のライブラリが必要です。
