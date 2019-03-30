@@ -3,7 +3,7 @@
 M5Stack Avatarの謎のコックさんバージョンです。（UMAです。）
 
 Avatar表示は、robo8080さんの[M5Stack_WebRadio_Avator](https://github.com/robo8080/M5Stack_WebRadio_Avator)をベースにさせていただきました。
-M5Stack-avatarのオリジナルはmeganetaaaanさんの[m5stack-avatar](https://github.com/meganetaaan/m5stack-avatar)です。
+M5Stack-avatarのオリジナルはmeganetaaanさんの[m5stack-avatar](https://github.com/meganetaaan/m5stack-avatar)です。
 
 背景にJPGファイルを使用したかったのでm5stack-avatarの古いバージョンを利用しています。
 
@@ -17,7 +17,7 @@ LovyanLauncherの詳しい使い方は下記のブログにて解説していま
 
 # カスタマイズのポイント
 ## 背景
-背景はAvatar_uma_bg.jpgで変更できます。（MSペイントはそのまま使えます。イラストレーターの場合はプログレッシブオフ、マット無し）
+背景はAvatar_uma_bg.jpgで変更できます。サイズは320×240です。MicroSoftペイントは保存すればそのまま使えます。イラストレーターの場合はプログレッシブオフ、マット無しでWeb用に保存をします。
 背景を作成する場合は目が移動する部分のマージンを取る必要があるので注意してください。(bgColorと同色)
 
 ## 目と口
