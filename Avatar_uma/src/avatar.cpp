@@ -158,7 +158,7 @@ void Eye::open(boolean isOpen)
 
 Avatar::Avatar()
 {
-  this->mouth = Mouth(160, 150, 50, 100, 4, 60, BLACK, TFT_PINK, BLACK);
+  this->mouth = Mouth(160, 150, 50, 100, 4, 60, BLACK, YELLOW, BLACK);
   this->eyeballR = Eye(80, 80, 3,  BLACK, WHITE, WHITE);
   this->eyeballL = Eye(240, 80, 3, BLACK, WHITE, WHITE);
   this->eyeR = Eye(80, 80, 30,     WHITE, BLACK, WHITE);
@@ -233,5 +233,7 @@ void Avatar::extendAction()
 {
   eyeL.open(1);
   eyeR.open(1);
+  M5.Lcd.fillCircle(80, 80, 3, BLACK);
+  M5.Lcd.fillCircle(240, 80, 3, BLACK);
   mouth.extendAction();
 }

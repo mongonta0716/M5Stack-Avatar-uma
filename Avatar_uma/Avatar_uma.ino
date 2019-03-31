@@ -4,6 +4,7 @@
 
 Avatar *avatar;
 TaskHandle_t taskHandle;
+extern const unsigned char avatar_uma_bg[];
 
 void breath(void *args)
 {
@@ -97,7 +98,7 @@ void setup()
   M5.Lcd.setBrightness(30);
   M5.Lcd.clear();
   M5.Lcd.setRotation(1);
-  M5.Lcd.drawJpgFile(SD, "/jpg/Avatar_uma_bg.jpg");
+  M5.Lcd.drawJpg(avatar_uma_bg, 2895);
   startAvatar(); // start drawing
 }
 
